@@ -128,7 +128,7 @@ class Authentication extends StatelessWidget {
           ],
         );
       case ApplicationLoginState.inSurvey:
-        return Survey();
+        return Survey(signOut);
       default:
         return Row(
           children: const [
