@@ -65,3 +65,48 @@ class StyledButton extends StatelessWidget {
         child: child,
       );
 }
+
+
+
+// survery related.
+class QuestionWidget extends StatelessWidget {
+  final String data;
+  QuestionWidget(this.data);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 60,
+      padding: const EdgeInsets.all(10),
+      width: double.infinity,
+      child: Text(
+        data,
+        textAlign: TextAlign.center,
+        style: const TextStyle(
+          fontSize: 36,
+          color: Colors.blue,
+        ),
+      ),
+    );
+  }
+}
+class OptionWidget extends StatelessWidget {
+  final onPress;
+  String AnswerText;
+  OptionWidget(this.onPress, this.AnswerText);
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: ElevatedButton(
+        onPressed: onPress,
+        child: Text(
+          AnswerText,
+          style: TextStyle(fontSize: 20),
+        ),
+      ),
+      width: double.infinity,
+      height: 54,
+      margin: EdgeInsets.all(8),
+    );
+  }
+}

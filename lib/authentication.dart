@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:survey_app/survey.dart';
 
 import './widget.dart';
 import './email_form.dart';
@@ -11,6 +12,7 @@ enum ApplicationLoginState {
   register,
   password,
   loggedIn,
+  inSurvey,
   adminEmailPassword,
   adminLoggedIn,
 }
@@ -25,6 +27,7 @@ class Authentication extends StatelessWidget {
     required this.cancelRegistration,
     required this.registerAccount,
     required this.signOut,
+    required this.startSurvey,
   });
 
   final ApplicationLoginState loginState;
@@ -47,6 +50,8 @@ class Authentication extends StatelessWidget {
     void Function(Exception e) error,
   ) registerAccount;
   final void Function() signOut;
+  // survey
+  final void Function() startSurvey;
 
   @override
   Widget build(BuildContext context) {
@@ -101,15 +106,29 @@ class Authentication extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.only(left: 24, bottom: 8),
-              child: StyledButton(
-                onPressed: () {
-                  signOut();
-                },
-                child: const Text('LOGOUT'),
+
+              // writing all logic to go surver for users here
+              child: Column(
+                children: [
+                  StyledButton(
+                    onPressed: () {
+                      signOut();
+                    },
+                    child: const Text('LOGOUT'),
+                  ),
+                  StyledButton(
+                    onPressed: () {
+                      startSurvey();
+                    },
+                    child: const Text('Start Survey'),
+                  ),
+                ],
               ),
             ),
           ],
         );
+      case ApplicationLoginState.inSurvey:
+        return Survey();
       default:
         return Row(
           children: const [
