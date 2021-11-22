@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:survey_app/widget.dart';
 
@@ -30,10 +32,8 @@ class _SurveyState extends State<Survey> {
         ? Column(
             children: [
               QuestionWidget(_questions[_currentPosition].question),
-              ...(_questions[_currentPosition].options)
-                  .map((option) => OptionWidget(() => {
-                    submitAnswer(option)
-                  }, option))
+              ...(_questions[_currentPosition].options).map((option) =>
+                  OptionWidget(() => {submitAnswer(option)}, option))
             ],
           )
         : Column(children: [
@@ -53,10 +53,22 @@ class _SurveyState extends State<Survey> {
   }
 
   // later change to store answer in database.
-  void submitSurvey() {
-    _questions.forEach((element) {
-      print(element.answer);
+  void submitSurvey() async {
+    print("Firebase current user: ${FirebaseAuth.instance.currentUser}");
+
+    var _fbs = FirebaseFirestore.instance.collection("surveys");
+    await _fbs.add({
+      "userId": FirebaseAuth.instance.currentUser!.uid,
+      "timestamp": DateTime.now().millisecondsSinceEpoch,
+      "name": FirebaseAuth.instance.currentUser!.displayName,
+      "questions": _questions.map((e) => e.question).toList(),
+      'questiontype': _questions.map((e) => e.questionType),
+      "answers": _questions.map((e) => e.answer).toList(),
     });
+
+    for (var element in _questions) {
+      print(element.answer);
+    }
   }
 
   // leter use database as source.

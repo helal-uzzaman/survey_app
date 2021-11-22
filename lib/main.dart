@@ -48,7 +48,6 @@ class HomePage extends StatelessWidget {
                   registerAccount: appState.registerAccount,
                   signOut: appState.signOut,
                   startSurvey: appState.startSurvey,
-                  
                   ))
         ],
       ),
