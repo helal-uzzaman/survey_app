@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import './authentication.dart';
 
+// view model
 class ApplicationState extends ChangeNotifier {
   ApplicationLoginState loginState = ApplicationLoginState.loggedOut;
 

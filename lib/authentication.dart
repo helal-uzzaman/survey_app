@@ -17,6 +17,7 @@ enum ApplicationLoginState {
   adminLoggedIn,
 }
 
+// mvvm -> view
 class Authentication extends StatelessWidget {
   const Authentication({
     required this.loginState,
@@ -102,30 +103,25 @@ class Authentication extends StatelessWidget {
           },
         );
       case ApplicationLoginState.loggedIn:
-        return Row(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 24, bottom: 8),
-
-              // writing all logic to go surver for users here
-              child: Column(
-                children: [
-                  StyledButton(
-                    onPressed: () {
-                      signOut();
-                    },
-                    child: const Text('LOGOUT'),
-                  ),
-                  StyledButton(
-                    onPressed: () {
-                      startSurvey();
-                    },
-                    child: const Text('Start Survey'),
-                  ),
-                ],
+        return Container(
+          alignment: Alignment.center,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              StyledButton(
+                onPressed: () {
+                  startSurvey();
+                },
+                child: const Text('Start Survey'),
               ),
-            ),
-          ],
+              StyledButton(
+                onPressed: () {
+                  signOut();
+                },
+                child: const Text('LOGOUT'),
+              ),
+            ],
+          ),
         );
       case ApplicationLoginState.inSurvey:
         return Survey(signOut);

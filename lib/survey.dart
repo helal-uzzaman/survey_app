@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:survey_app/application_state.dart';
 import 'package:survey_app/widget.dart';
 
 class Question {
@@ -12,7 +11,7 @@ class Question {
   var answer;
 }
 
-enum QuestionType { multipleChoice, box, text }
+enum QuestionType { singleChoice, multipleChoice, box, text }
 
 class Survey extends StatefulWidget {
   Survey(this.signOut);
@@ -64,14 +63,18 @@ class _SurveyState extends State<Survey> {
     });
   }
 
-  // later change to store answer in database.
+  // later change to store answer in database. done
   void submitSurvey(
     void Function(Exception e) errorCallback,
   ) async {
+    var currentUser = FirebaseAuth.instance.currentUser;
     print("Firebase current user: ${FirebaseAuth.instance.currentUser}");
     try {
-      var _fbs = FirebaseFirestore.instance.collection("surveys");
-      await _fbs.add({
+      var _fbsDocSurvey = FirebaseFirestore.instance
+          .collection("surveys")
+          .doc("${currentUser!.uid}");
+
+      await _fbsDocSurvey.set({
         "userId": FirebaseAuth.instance.currentUser!.uid,
         "timestamp": DateTime.now().millisecondsSinceEpoch,
         "name": FirebaseAuth.instance.currentUser!.displayName,
@@ -80,7 +83,7 @@ class _SurveyState extends State<Survey> {
             _questions.map((e) => e.questionType.toString()).toList(),
         "answers": _questions.map((e) => e.answer).toList(),
       });
-      
+
       setState(() {
         _submissionDone = true;
       });
@@ -100,24 +103,24 @@ class _SurveyState extends State<Survey> {
     var questions = [
       Question(
         "How are you?",
-        QuestionType.multipleChoice,
+        QuestionType.singleChoice,
         ["fine", "ok", "bad"],
       ),
-      Question("What is your sex?", QuestionType.multipleChoice,
+      Question("What is your sex?", QuestionType.singleChoice,
           ["male", "femal", "other"]),
       Question(
         "What is your religion?",
-        QuestionType.multipleChoice,
+        QuestionType.singleChoice,
         ["muslim", "cristan", "hindu"],
       ),
       Question(
         "How are you?",
-        QuestionType.multipleChoice,
+        QuestionType.singleChoice,
         ["fine", "ok", "bad"],
       ),
       Question(
         "What is your country?",
-        QuestionType.multipleChoice,
+        QuestionType.singleChoice,
         ["Nepal", "Srilanka", "Bangladesh", "India"],
       ),
     ];

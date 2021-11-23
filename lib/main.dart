@@ -34,22 +34,21 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Survey App"),
       ),
-      body: ListView(
-        children: [
-          Consumer<ApplicationState>(
+      body: Container(
+        alignment: Alignment.center,
+        child: Consumer<ApplicationState>(
               builder: (context, appState, _) => Authentication(
-                  loginState: appState.loginState,
-                  email: appState.email,
-                  startLoginFlow: appState.startLoginFlow,
-                  verifyEmail: appState.verifyEmail,
-                  signInWithEmailAndPassword:
-                      appState.signInWithEmailAndPassword,
-                  cancelRegistration: appState.cancelRegistration,
-                  registerAccount: appState.registerAccount,
-                  signOut: appState.signOut,
-                  startSurvey: appState.startSurvey,
-                  ))
-        ],
+                loginState: appState.loginState,
+                email: appState.email,
+                startLoginFlow: appState.startLoginFlow,
+                verifyEmail: appState.verifyEmail,
+                signInWithEmailAndPassword: appState.signInWithEmailAndPassword,
+                cancelRegistration: appState.cancelRegistration,
+                registerAccount: appState.registerAccount,
+                signOut: appState.signOut,
+                startSurvey: appState.startSurvey,
+              ),
+            )
       ),
     );
   }
