@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:survey_app/admin/admin_home.dart';
 import 'package:survey_app/survey.dart';
 
 import './widget.dart';
@@ -13,8 +14,6 @@ enum ApplicationLoginState {
   password,
   loggedIn,
   inSurvey,
-  adminEmailPassword,
-  adminLoggedIn,
 }
 
 // mvvm -> view
@@ -58,17 +57,31 @@ class Authentication extends StatelessWidget {
   Widget build(BuildContext context) {
     switch (loginState) {
       case ApplicationLoginState.loggedOut:
-        return Row(
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 24, bottom: 8),
-              child: StyledButton(
-                onPressed: () {
-                  startLoginFlow();
-                },
-                child: const Text('Login'),
-              ),
+            const Header("Welcome"),
+            const SizedBox(
+              height: 20,
             ),
+            const Text("Login to Start the survey"),
+            ElevatedButton(
+              onPressed: () {
+                startLoginFlow();
+              },
+              child: const Text('Login'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) {
+                    return AdminHome();
+                  }),
+                );
+              },
+              child: Text("Admin Login"),
+            )
           ],
         );
       case ApplicationLoginState.emailAddress:
