@@ -73,6 +73,9 @@ class Authentication extends StatelessWidget {
             ),
             TextButton(
               onPressed: () {
+                // if (loginState == ApplicationLoginState.loggedIn) {
+                //   signOut;
+                // }
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) {

@@ -1,27 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:survey_app/admin/admin_authentication.dart';
 import 'package:survey_app/admin/admin_state.dart';
 
 class AdminHome extends StatelessWidget {
-  const AdminHome({ Key? key }) : super(key: key);
+  const AdminHome({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create:(context) =>  AdminState(),
+      create: (context) => AdminState(),
       builder: (context, _) => AdminScreen(),
-
     );
   }
 }
 
 class AdminScreen extends StatelessWidget {
-  const AdminScreen({ Key? key }) : super(key: key);
+  const AdminScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(appBar: AppBar(title: Text("Admin"),),body: Text("Welcome to admin page"),),
+      home: Scaffold(
+        appBar: AppBar(
+          title:const Text("Admin Page"),
+        ),
+        body: Consumer<AdminState>(
+          builder: (context, adstate, _) => AdminAuthentication(
+              adminScreenState: adstate.adminState,
+              signInWithEmailAndPassword: adstate.signInWithEmailAndPassword,
+              signOut: adstate.signOut),
+        ),
+      ),
     );
   }
 }
