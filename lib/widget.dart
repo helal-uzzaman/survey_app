@@ -92,15 +92,15 @@ class QuestionWidget extends StatelessWidget {
 }
 class OptionWidget extends StatelessWidget {
   final onPress;
-  String AnswerText;
-  OptionWidget(this.onPress, this.AnswerText);
+  String answerText;
+  OptionWidget(this.onPress, this.answerText);
   @override
   Widget build(BuildContext context) {
     return Container(
       child: ElevatedButton(
         onPressed: onPress,
         child: Text(
-          AnswerText,
+          answerText,
           style: TextStyle(fontSize: 20),
         ),
       ),

@@ -20,17 +20,16 @@ class AdminScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title:const Text("Admin Page"),
-        ),
-        body: Consumer<AdminState>(
-          builder: (context, adstate, _) => AdminAuthentication(
-              adminScreenState: adstate.adminState,
-              signInWithEmailAndPassword: adstate.signInWithEmailAndPassword,
-              signOut: adstate.signOut),
-        ),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Admin Page"),
+      ),
+      body: Consumer<AdminState>(
+        builder: (context, adstate, _) => AdminAuthentication(
+            adminScreenState: adstate.adminState,
+            signInWithEmailAndPassword: adstate.signInWithEmailAndPassword,
+            surveyList: adstate.surveyList,
+            signOut: adstate.signOut),
       ),
     );
   }

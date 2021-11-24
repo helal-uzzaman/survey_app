@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:survey_app/admin/detail_page.dart';
+import 'package:survey_app/admin/survey_model.dart';
 
 import '../widget.dart';
 import './admin_form.dart';
 
 enum AdminScreenState {
   adminLoggedOut,
+  authenticating,
   adminEmailPassword,
   adminLoggedIn,
   detailPage,
@@ -15,6 +18,7 @@ class AdminAuthentication extends StatelessWidget {
     required this.adminScreenState,
     // required this.startLoginFlow,
     required this.signInWithEmailAndPassword,
+    required this.surveyList,
     required this.signOut,
   });
 
@@ -22,13 +26,13 @@ class AdminAuthentication extends StatelessWidget {
   // final String? email;
   // final String? password;
   // final void Function() startLoginFlow;
-
   final void Function(
     String email,
     String password,
     void Function(Exception e) signInError,
     void Function(Exception e) adminNotFound,
   ) signInWithEmailAndPassword;
+  final List<SurveyModel> surveyList;
 
   final void Function() signOut;
 
@@ -45,13 +49,50 @@ class AdminAuthentication extends StatelessWidget {
                 "Failed to sign in. Put valid credentials for admin log in.",
                 e),
             (e) => _showErrorDialog(
-                context,
-                "Failed to sign in. You are not admin.",
-                e),
+                context, "Failed to sign in. You are not admin.", e),
           );
         });
       case AdminScreenState.adminLoggedIn:
-        return Text("all survey will be show here.");
+        return ListView(
+          children: [
+            StyledButton(
+              child: const Text("LOG OUT"),
+              onPressed: signOut,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text("Number of Person Who Took the survey: ${surveyList.length}."),
+            ),
+            ...surveyList
+                .map((e) => Card(
+                      child: ListTile(
+                        leading: Container(
+                          child: const Icon(Icons.person),
+                          decoration: const BoxDecoration(
+                              border: Border(
+                                  right: BorderSide(
+                                      width: 1.0, color: Colors.white24))),
+                        ),
+                        trailing: Icon(Icons.arrow_right_sharp),
+                        title: Text(e.name),
+                        subtitle: Text(e.email),
+                        tileColor: Colors.blue[50],
+                        dense: true,
+                        onTap: () => {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => DetailsPage(e),
+                            ),
+                          )
+                        },
+                      ),
+                    ))
+                .toList(),
+          ],
+        );
+      case AdminScreenState.detailPage:
+        return ListView();
 
       default:
         return Row(

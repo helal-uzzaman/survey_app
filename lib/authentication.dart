@@ -84,7 +84,7 @@ class Authentication extends StatelessWidget {
                 );
               },
               child: Text("Admin Login"),
-            )
+            ),
           ],
         );
       case ApplicationLoginState.emailAddress:
@@ -136,6 +136,20 @@ class Authentication extends StatelessWidget {
                 },
                 child: const Text('LOGOUT'),
               ),
+              TextButton(
+              onPressed: () {
+                // if (loginState == ApplicationLoginState.loggedIn) {
+                //   signOut;
+                // }
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) {
+                    return AdminHome();
+                  }),
+                );
+              },
+              child: Text("Admin Login"),
+            ),
             ],
           ),
         );

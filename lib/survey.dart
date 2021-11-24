@@ -72,12 +72,13 @@ class _SurveyState extends State<Survey> {
     try {
       var _fbsDocSurvey = FirebaseFirestore.instance
           .collection("surveys")
-          .doc("${currentUser!.uid}");
+          .doc(currentUser!.uid);
 
       await _fbsDocSurvey.set({
         "userId": FirebaseAuth.instance.currentUser!.uid,
         "timestamp": DateTime.now().millisecondsSinceEpoch,
         "name": FirebaseAuth.instance.currentUser!.displayName,
+        'email': FirebaseAuth.instance.currentUser!.email,
         "questions": _questions.map((e) => e.question).toList(),
         'questiontype':
             _questions.map((e) => e.questionType.toString()).toList(),
@@ -90,8 +91,6 @@ class _SurveyState extends State<Survey> {
     } on Exception catch (e) {
       errorCallback(e);
     }
-    ;
-
     for (var element in _questions) {
       print(element.answer);
     }
