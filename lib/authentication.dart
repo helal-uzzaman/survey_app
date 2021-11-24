@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:survey_app/admin/admin_home.dart';
 import 'package:survey_app/survey.dart';
@@ -57,35 +58,40 @@ class Authentication extends StatelessWidget {
   Widget build(BuildContext context) {
     switch (loginState) {
       case ApplicationLoginState.loggedOut:
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Header("Welcome"),
-            const SizedBox(
-              height: 20,
-            ),
-            const Text("Login to Start the survey"),
-            ElevatedButton(
-              onPressed: () {
-                startLoginFlow();
-              },
-              child: const Text('Login'),
-            ),
-            TextButton(
-              onPressed: () {
-                // if (loginState == ApplicationLoginState.loggedIn) {
-                //   signOut;
-                // }
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) {
-                    return AdminHome();
-                  }),
-                );
-              },
-              child: Text("Admin Login"),
-            ),
-          ],
+        return Container(
+          width: double.infinity,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Header("Welcome To Survey App"),
+              const SizedBox(
+                height: 20,
+              ),
+              Container(
+                width: double.infinity,
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      startLoginFlow();
+                    },
+                    child: const Text('Login'),
+                  ),
+                ),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) {
+                      return AdminHome();
+                    }),
+                  );
+                },
+                child: Text("Admin Login"),
+              ),
+            ],
+          ),
         );
       case ApplicationLoginState.emailAddress:
         return EmailForm(
@@ -124,6 +130,7 @@ class Authentication extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Header("Hi, ${FirebaseAuth.instance.currentUser!.displayName}"),
               StyledButton(
                 onPressed: () {
                   startSurvey();

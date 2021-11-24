@@ -39,7 +39,9 @@ class _SurveyState extends State<Survey> {
             ],
           )
         : !_submissionDone
-            ? Column(children: [
+            ? Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
                 StyledButton(
                   child: const Text("Submit"),
                   onPressed: () => {
@@ -47,8 +49,11 @@ class _SurveyState extends State<Survey> {
                   },
                 )
               ])
-            : Column(children: [
-                Header("Thank you for completing the survey."),
+            : Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Header("Thank you for completing the survey."),
+                
                 StyledButton(
                   child: const Text("LogOut"),
                   onPressed: widget.signOut,
