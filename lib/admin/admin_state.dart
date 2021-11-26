@@ -41,9 +41,10 @@ class AdminState extends ChangeNotifier {
     try {
       await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
-      var user = FirebaseAuth.instance.currentUser;
-      var uid = user!.uid;
-      adminValidation(uid);
+      adminState = AdminScreenState.authenticating;
+      // var user = FirebaseAuth.instance.currentUser;
+      // var uid = user!.uid;
+      // adminValidation(uid);
     } on FirebaseAuthException catch (e) {
       errorCallback(e);
     } on Exception catch (e) {
@@ -52,6 +53,7 @@ class AdminState extends ChangeNotifier {
   }
 
   void adminValidation(String uid) async {
+    ///deprecated ///
     var admin =
         await FirebaseFirestore.instance.collection("admin").doc(uid).get();
     if (admin.exists) {
@@ -66,22 +68,25 @@ class AdminState extends ChangeNotifier {
   }
 
   void adminValidationOverLoad() async {
-    var uid = FirebaseAuth.instance.currentUser!.uid;
-    var admin =
-        await FirebaseFirestore.instance.collection("admin").doc(uid).get();
-    if (!admin.exists) {
-      adminState = AdminScreenState.adminEmailPassword;
-      throw Exception(
-          "You can take survey only. Use your admin login credentials to log in here.");
+    if (FirebaseAuth.instance.currentUser != null) {
+      final uid = FirebaseAuth.instance.currentUser!.uid;
+      var admin =
+          await FirebaseFirestore.instance.collection("admin").doc(uid).get();
+      if (admin.exists) {
+        adminState = AdminScreenState.adminLoggedIn;
+        getSurveyData();
+      } else {
+        adminState = AdminScreenState.adminEmailPassword;
+      }
     } else {
-      adminState = AdminScreenState.adminLoggedIn;
-      getSurveyData();
-      notifyListeners();
+      adminState = AdminScreenState.adminEmailPassword;
     }
+    notifyListeners();
   }
 
   void signOut() {
     FirebaseAuth.instance.signOut();
+    print("Sign out $AdminState");
   }
 
   void getSurveyData() async {
