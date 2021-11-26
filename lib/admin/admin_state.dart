@@ -24,7 +24,7 @@ class AdminState extends ChangeNotifier {
     FirebaseAuth.instance.userChanges().listen((user) async {
       if (user != null) {
         adminState = AdminScreenState.authenticating;
-        adminValidation(user.uid);
+        // adminValidation(user.uid);
       } else {
         adminState = AdminScreenState.adminEmailPassword;
       }
@@ -36,38 +36,19 @@ class AdminState extends ChangeNotifier {
     String email,
     String password,
     void Function(FirebaseAuthException e) errorCallback,
-    void Function(Exception e) adminNotFound,
   ) async {
     try {
       await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
       adminState = AdminScreenState.authenticating;
-      // var user = FirebaseAuth.instance.currentUser;
-      // var uid = user!.uid;
-      // adminValidation(uid);
     } on FirebaseAuthException catch (e) {
       errorCallback(e);
-    } on Exception catch (e) {
-      adminNotFound(e);
     }
   }
 
-  void adminValidation(String uid) async {
-    ///deprecated ///
-    var admin =
-        await FirebaseFirestore.instance.collection("admin").doc(uid).get();
-    if (admin.exists) {
-      adminState = AdminScreenState.adminLoggedIn;
-      getSurveyData();
-    } else {
-      adminState = AdminScreenState.adminEmailPassword;
-      throw Exception(
-          "You can take survey only. Use your admin login credentials to log in here.");
-    }
-    notifyListeners();
-  }
-
-  void adminValidationOverLoad() async {
+  void adminValidationOverLoad(
+    void Function(Exception e) errorCallBack,
+  ) async {
     if (FirebaseAuth.instance.currentUser != null) {
       final uid = FirebaseAuth.instance.currentUser!.uid;
       var admin =
@@ -77,6 +58,7 @@ class AdminState extends ChangeNotifier {
         getSurveyData();
       } else {
         adminState = AdminScreenState.adminEmailPassword;
+        errorCallBack(Exception('Credential not matched with Admin credential.'));
       }
     } else {
       adminState = AdminScreenState.adminEmailPassword;

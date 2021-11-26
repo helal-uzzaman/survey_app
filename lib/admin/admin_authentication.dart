@@ -7,34 +7,29 @@ import './admin_form.dart';
 
 enum AdminScreenState {
   adminLoggedOut,
-  authenticating,
   adminEmailPassword,
+  authenticating,
   adminLoggedIn,
-  detailPage,
 }
 
 class AdminAuthentication extends StatelessWidget {
   AdminAuthentication({
     required this.adminScreenState,
-    // required this.startLoginFlow,
     required this.signInWithEmailAndPassword,
-    required this.adminAuthenticate,
+    required this.authenticateAsAdmin,
     required this.surveyList,
     required this.signOut,
-  }) {
-    adminAuthenticate();
-  }
-  final void Function() adminAuthenticate;
+  });
+  final void Function(
+      void Function(
+    Exception e,
+  )) authenticateAsAdmin;
 
   final AdminScreenState adminScreenState;
-  // final String? email;
-  // final String? password;
-  // final void Function() startLoginFlow;
   final void Function(
     String email,
     String password,
     void Function(Exception e) signInError,
-    void Function(Exception e) adminNotFound,
   ) signInWithEmailAndPassword;
   final List<SurveyModel> surveyList;
 
@@ -49,11 +44,10 @@ class AdminAuthentication extends StatelessWidget {
             email,
             password,
             (e) => _showErrorDialog(
-                context,
-                "Failed to sign in. Put valid credentials for admin log in.",
-                e),
-            (e) => _showErrorDialog(
-                context, "Failed to sign in. You are not admin.", e),
+              context,
+              "Failed to sign in. Put valid credentials for admin log in.",
+              e,
+            ),
           );
         });
       case AdminScreenState.adminLoggedIn:
@@ -98,7 +92,11 @@ class AdminAuthentication extends StatelessWidget {
         );
 
       case AdminScreenState.authenticating:
-        return Authenticating();
+        authenticateAsAdmin(
+            (error) => _showErrorDialog(context, "Your are not Admin", error));
+        return const Center(
+          child:  CircularProgressIndicator(),
+        );
 
       default:
         return Row(
@@ -141,17 +139,6 @@ class AdminAuthentication extends StatelessWidget {
           ],
         );
       },
-    );
-  }
-}
-
-class Authenticating extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        child: CircularProgressIndicator(),
-      ),
     );
   }
 }
