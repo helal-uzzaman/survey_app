@@ -84,6 +84,7 @@ class AdminState extends ChangeNotifier {
             name: document.data()['name'].toString(),
             email: document.data()['email'].toString(),
             questions: document.data()['questions'],
+            timeStamp: DateTime.fromMillisecondsSinceEpoch(document.data()['timestamp']),
             answers: document.data()['answers']));
       }
       print("survey list: $_surveyList");

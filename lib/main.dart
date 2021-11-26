@@ -32,24 +32,26 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Survey App"),
+        centerTitle: true,
+        title: const Text(
+          "Survey App",
+        ),
       ),
       body: Container(
-        alignment: Alignment.center,
-        child: Consumer<ApplicationState>(
-              builder: (context, appState, _) => Authentication(
-                loginState: appState.loginState,
-                email: appState.email,
-                startLoginFlow: appState.startLoginFlow,
-                verifyEmail: appState.verifyEmail,
-                signInWithEmailAndPassword: appState.signInWithEmailAndPassword,
-                cancelRegistration: appState.cancelRegistration,
-                registerAccount: appState.registerAccount,
-                signOut: appState.signOut,
-                startSurvey: appState.startSurvey,
-              ),
-            )
-      ),
+          alignment: Alignment.center,
+          child: Consumer<ApplicationState>(
+            builder: (context, appState, _) => Authentication(
+              loginState: appState.loginState,
+              email: appState.email,
+              startLoginFlow: appState.startLoginFlow,
+              verifyEmail: appState.verifyEmail,
+              signInWithEmailAndPassword: appState.signInWithEmailAndPassword,
+              cancelRegistration: appState.cancelRegistration,
+              registerAccount: appState.registerAccount,
+              signOut: appState.signOut,
+              startSurvey: appState.startSurvey,
+            ),
+          )),
     );
   }
 }

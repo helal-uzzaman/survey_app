@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:survey_app/admin/detail_page.dart';
 import 'package:survey_app/admin/survey_model.dart';
 
@@ -50,6 +51,12 @@ class AdminAuthentication extends StatelessWidget {
             ),
           );
         });
+      case AdminScreenState.authenticating:
+        authenticateAsAdmin(
+            (error) => _showErrorDialog(context, "Your are not Admin", error));
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
       case AdminScreenState.adminLoggedIn:
         return ListView(
           children: [
@@ -72,7 +79,10 @@ class AdminAuthentication extends StatelessWidget {
                                   right: BorderSide(
                                       width: 1.0, color: Colors.white24))),
                         ),
-                        trailing: Icon(Icons.arrow_right_sharp),
+                        trailing: Text(
+                          DateFormat().add_yMd().add_jms().format(e.timeStamp),
+                          style: TextStyle(fontSize: 14),
+                        ),
                         title: Text(e.name),
                         subtitle: Text(e.email),
                         tileColor: Colors.blue[50],
@@ -89,13 +99,6 @@ class AdminAuthentication extends StatelessWidget {
                     ))
                 .toList(),
           ],
-        );
-
-      case AdminScreenState.authenticating:
-        authenticateAsAdmin(
-            (error) => _showErrorDialog(context, "Your are not Admin", error));
-        return const Center(
-          child:  CircularProgressIndicator(),
         );
 
       default:

@@ -30,8 +30,8 @@ class DetailsPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       ListTile(
-                        leading: Text(index.toString(),
-                            style: TextStyle(
+                        leading: Text((index+1).toString(),
+                            style: const TextStyle(
                               fontSize: 20,
                             )),
                         title: Text(
