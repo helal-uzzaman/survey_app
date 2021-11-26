@@ -23,7 +23,7 @@ class AdminState extends ChangeNotifier {
 
     FirebaseAuth.instance.userChanges().listen((user) async {
       if (user != null) {
-        adminState = AdminScreenState.adminEmailPassword;
+        adminState = AdminScreenState.authenticating;
         adminValidation(user.uid);
       } else {
         adminState = AdminScreenState.adminEmailPassword;
@@ -52,6 +52,21 @@ class AdminState extends ChangeNotifier {
   }
 
   void adminValidation(String uid) async {
+    var admin =
+        await FirebaseFirestore.instance.collection("admin").doc(uid).get();
+    if (admin.exists) {
+      adminState = AdminScreenState.adminLoggedIn;
+      getSurveyData();
+    } else {
+      adminState = AdminScreenState.adminEmailPassword;
+      throw Exception(
+          "You can take survey only. Use your admin login credentials to log in here.");
+    }
+    notifyListeners();
+  }
+
+  void adminValidationOverLoad() async {
+    var uid = FirebaseAuth.instance.currentUser!.uid;
     var admin =
         await FirebaseFirestore.instance.collection("admin").doc(uid).get();
     if (!admin.exists) {

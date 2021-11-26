@@ -28,8 +28,10 @@ class AdminScreen extends StatelessWidget {
         builder: (context, adstate, _) => AdminAuthentication(
             adminScreenState: adstate.adminState,
             signInWithEmailAndPassword: adstate.signInWithEmailAndPassword,
+            adminAuthenticate: adstate.adminValidationOverLoad,
             surveyList: adstate.surveyList,
             signOut: adstate.signOut),
+          
       ),
     );
   }

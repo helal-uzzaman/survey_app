@@ -14,13 +14,17 @@ enum AdminScreenState {
 }
 
 class AdminAuthentication extends StatelessWidget {
-  const AdminAuthentication({
+  AdminAuthentication({
     required this.adminScreenState,
     // required this.startLoginFlow,
     required this.signInWithEmailAndPassword,
+    required this.adminAuthenticate,
     required this.surveyList,
     required this.signOut,
-  });
+  }) {
+    adminAuthenticate();
+  }
+  final void Function() adminAuthenticate;
 
   final AdminScreenState adminScreenState;
   // final String? email;
@@ -61,7 +65,8 @@ class AdminAuthentication extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text("Number of Person Who Took the survey: ${surveyList.length}."),
+              child: Text(
+                  "Number of Person Who Took the survey: ${surveyList.length}."),
             ),
             ...surveyList
                 .map((e) => Card(
@@ -91,8 +96,9 @@ class AdminAuthentication extends StatelessWidget {
                 .toList(),
           ],
         );
-      case AdminScreenState.detailPage:
-        return ListView();
+
+      case AdminScreenState.authenticating:
+        return Authenticating();
 
       default:
         return Row(
@@ -135,6 +141,17 @@ class AdminAuthentication extends StatelessWidget {
           ],
         );
       },
+    );
+  }
+}
+
+class Authenticating extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Container(
+        child: CircularProgressIndicator(),
+      ),
     );
   }
 }
